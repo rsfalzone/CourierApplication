@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="courier:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/courier_jar</output-path>
+    <root id="archive" name="courier.jar">
+      <element id="module-output" name="CourierApplication" />
+    </root>
+  </artifact>
+</component>
