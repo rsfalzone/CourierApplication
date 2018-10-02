@@ -1,12 +1,16 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
-public class UserContent extends JComponent {
+
+public class UserContent extends JComponent implements MouseMotionListener, MouseListener {
     ArrayList<Drawn> displayList;
 
     public UserContent() {
-        displayList = new ArrayList();
+        displayList = new ArrayList<>();
         displayList.add(new Shape("rectangle", 90, 80, 300, 300 ));
         displayList.add(new Shape("oval", 90, 80, 300, 300 ));
         displayList.add(new Shape("rectangle", 190, 180, 300, 300 ));
@@ -37,5 +41,36 @@ public class UserContent extends JComponent {
                 }
             }
         }
+    }
+    public void mouseExited(MouseEvent e)
+    {
+
+        // show the point through which the mouse exited the frame
+        System.out.println("mouse exited through point:" + e.getX() + " " + e.getY());
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        System.out.println("mouse clicked at point:" + e.getX() + " " + e.getY());
+    }
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+    @Override
+    public void mouseDragged(MouseEvent e) {
+
+    }
+    @Override
+    public void mouseMoved(MouseEvent e) {
+
     }
 }
