@@ -96,6 +96,7 @@ public class WebBrowser extends JPanel {
             add(sp, BorderLayout.CENTER);
         } catch (IOException ex) {
             ex.printStackTrace();
+            URLList.removeLast();
         }
     }
 }
