@@ -27,14 +27,14 @@ public class CourierApp {
         JRadioButton btnText = new JRadioButton("Text");
         JLabel statusBar = new JLabel("Status Bar");
 
-        btnNewPage.addActionListener(e -> {statusBar.setText("New Page button clicked.");});
-        btnDelPage.addActionListener(e -> {statusBar.setText("Delete Page button clicked.");});
-        btnPageFwd.addActionListener(e -> {statusBar.setText("Page Forward button clicked.");});
-        btnPageBack.addActionListener(e -> {statusBar.setText("Page Backward button clicked.");});
-        btnFreeForm.addActionListener(e -> {statusBar.setText("Free-form Ink radiobutton clicked.");});
-        btnRectangle.addActionListener(e -> {statusBar.setText("Rectangle radiobutton clicked.");});
-        btnOval.addActionListener(e -> {statusBar.setText("Oval radiobutton clicked.");});
-        btnText.addActionListener(e -> {statusBar.setText("Text radiobutton clicked.");});
+        btnNewPage.addActionListener(e -> statusBar.setText("New Page button clicked."));
+        btnDelPage.addActionListener(e -> statusBar.setText("Delete Page button clicked."));
+        btnPageFwd.addActionListener(e -> statusBar.setText("Page Forward button clicked."));
+        btnPageBack.addActionListener(e -> statusBar.setText("Page Backward button clicked."));
+        btnFreeForm.addActionListener(e -> statusBar.setText("Free-form Ink radiobutton clicked."));
+        btnRectangle.addActionListener(e -> statusBar.setText("Rectangle radiobutton clicked."));
+        btnOval.addActionListener(e -> statusBar.setText("Oval radiobutton clicked."));
+        btnText.addActionListener(e -> statusBar.setText("Text radiobutton clicked."));
 
         buttons.add(btnNewPage);
         buttons.add(btnDelPage);
@@ -51,12 +51,12 @@ public class CourierApp {
         rightSide.add(buttons, BorderLayout.SOUTH);
 
         // Split pane
-        JSplitPane splitPane = new JSplitPane(1, tabbedFrame,  rightSide);
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, tabbedFrame,  rightSide);
 
         // mainFrame
         BorderLayout layout = new BorderLayout();
         JFrame mainFrame = new JFrame("Courier App");
-        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainFrame.setLayout(layout);
         mainFrame.add(splitPane, BorderLayout.CENTER);
         mainFrame.add(statusBar,BorderLayout.SOUTH);
