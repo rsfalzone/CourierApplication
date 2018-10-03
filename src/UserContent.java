@@ -7,11 +7,11 @@ import java.util.ArrayList;
 
 
 public class UserContent extends JComponent implements MouseMotionListener, MouseListener {
-    ArrayList<Drawn> displayList;
-    Mode mode;
+    private ArrayList<Drawn> displayList;
+    private Mode mode;
 
-    public UserContent() {
-        mode = Mode.RECT;
+    public UserContent(Mode mode) {
+        this.mode = mode;
         displayList = new ArrayList<>();
 //        displayList.add(new Shape("rectangle", 90, 80, 300, 300 ));
 //        displayList.add(new Shape("oval", 90, 80, 300, 300 ));
@@ -46,7 +46,12 @@ public class UserContent extends JComponent implements MouseMotionListener, Mous
                 if (shape.getType().equals("rectangle")) {
                     g2.drawRect(shape.getX(), shape.getY(),shape.getWidth(), shape.getHeight());
                 } else if (shape.getType().equals("oval")) {
-                    g2.drawOval(shape.getX(), shape.getY(),shape.getWidth(), shape.getHeight());
+                    g2.drawOval(shape.getX(), shape.getY(), shape.getWidth(), shape.getHeight());
+                }
+            } else {
+                ArrayList<Integer> points  = ((Stroke) e).getPoints();
+                for (int i = 2; i < points.size(); i = i+2){
+                    g2.drawLine(points.get(i-2), points.get(i-1), points.get(i), points.get(i+1));
                 }
             }
         }
@@ -80,6 +85,8 @@ public class UserContent extends JComponent implements MouseMotionListener, Mous
         int y = e.getY();
         if (mode == Mode.FREE) {
             // TODO: strokes
+            displayList.add(new Stroke("stroke", x, y));
+            mode = Mode.RECT;   // TESTING ONLY
         } else if (mode == Mode.RECT) {
             displayList.add(new Shape("rectangle", x, y, 0, 0));
             System.out.println(mode);
@@ -87,7 +94,7 @@ public class UserContent extends JComponent implements MouseMotionListener, Mous
         } else if (mode == Mode.OVAL) {
             displayList.add(new Shape("oval", x, y, 0, 0));
             System.out.println(mode);
-            mode = Mode.RECT;   // TESTING ONLY
+            mode = Mode.FREE;   // TESTING ONLY
         } else {
             // TODO: text
         }
@@ -97,6 +104,8 @@ public class UserContent extends JComponent implements MouseMotionListener, Mous
     @Override
     public void mouseReleased(MouseEvent e) {
         // Invoked when a mouse button has been released on a component.
+    // Could hold a curr variable that is changed while mouse is dragged.
+    // this curr would then be added to the display list upon release.
     }
 
     @Override
@@ -106,6 +115,8 @@ public class UserContent extends JComponent implements MouseMotionListener, Mous
         if (curr instanceof  Shape) {
             ((Shape) curr).setWidth(e.getX()-((Shape) curr).getX());
             ((Shape) curr).setHeight(e.getY()-((Shape) curr).getY());
+        } else {
+            ((Stroke) curr).add(e.getX(), e.getY());
         }
         repaint();
     }

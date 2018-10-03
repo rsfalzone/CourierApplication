@@ -16,7 +16,7 @@ public class CourierApp {
 
         // Right side
         LinkedList<UserContent> userContentList= new LinkedList<>();
-        userContentList.add(new UserContent());
+        userContentList.add(new UserContent(Mode.FREE));
 
         JPanel buttons = new JPanel();
 
@@ -41,7 +41,7 @@ public class CourierApp {
 
         btnNewPage.addActionListener(e -> {
             statusBar.setText("New Page added to User Content.");
-            userContentList.add(new UserContent());
+            userContentList.add(new UserContent(Mode.FREE));
             // add to right side
             // revalidate right side
             // repaint right side
