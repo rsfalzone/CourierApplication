@@ -40,14 +40,20 @@ public class UserContent extends JComponent implements MouseMotionListener, Mous
         g2.drawLine(80, 0, 80, getHeight());
 
         // Draw: Loops over display list to paint.
-        g2.setColor(Color.BLACK);
         for (Drawn e: displayList) {
+            g2.setColor(Color.BLACK);
             if (e instanceof Shape) {
                 Shape shape = (Shape) e;
                 if (shape.getType().equals("rectangle")) {
                     g2.drawRect(shape.getX(), shape.getY(),shape.getWidth(), shape.getHeight());
                 } else if (shape.getType().equals("oval")) {
                     g2.drawOval(shape.getX(), shape.getY(), shape.getWidth(), shape.getHeight());
+                } else if (shape.getType().equals("text")) {
+                    TextBox textbox = (TextBox) shape;
+                    g2.setColor(Color.YELLOW);
+                    g2.fillRect(textbox.getX(), textbox.getY(), textbox.getWidth(), textbox.getHeight());
+                    g2.setColor(Color.BLACK);
+                    g2.drawString(textbox.getText(), textbox.getX() + 5, textbox.getY()+ 20);
                 }
             } else {
                 ArrayList<Integer> points  = ((Stroke) e).getPoints();
@@ -91,9 +97,9 @@ public class UserContent extends JComponent implements MouseMotionListener, Mous
             displayList.add(new Shape("rectangle", x, y, 0, 0));
         } else if (mode == Mode.OVAL) {
             displayList.add(new Shape("oval", x, y, 0, 0));
-        } else {
+        } else if (mode == Mode.TEXT){
             // TODO: text
-            System.out.println("mouse pressed1: " + mode);
+            displayList.add(new TextBox("text", x, y, 0, 0));
         }
         repaint();
     }
@@ -113,6 +119,9 @@ public class UserContent extends JComponent implements MouseMotionListener, Mous
         if (curr instanceof  Shape) {
             ((Shape) curr).setWidth(e.getX()-((Shape) curr).getX());
             ((Shape) curr).setHeight(e.getY()-((Shape) curr).getY());
+            if (curr instanceof TextBox) {
+                ((TextBox) curr).setText("TEST. TEST. TEST");
+            }
         } else if (curr instanceof Stroke) {
             ((Stroke) curr).add(e.getX(), e.getY());
         }
