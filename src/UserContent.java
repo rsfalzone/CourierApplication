@@ -11,11 +11,13 @@ public class UserContent extends JComponent implements MouseMotionListener, Mous
 
     public UserContent() {
         displayList = new ArrayList<>();
-        displayList.add(new Shape("rectangle", 90, 80, 300, 300 ));
-        displayList.add(new Shape("oval", 90, 80, 300, 300 ));
-        displayList.add(new Shape("rectangle", 190, 180, 300, 300 ));
-        displayList.add(new Shape("oval", 190, 180, 300, 300 ));
+//        displayList.add(new Shape("rectangle", 90, 80, 300, 300 ));
+//        displayList.add(new Shape("oval", 90, 80, 300, 300 ));
+//        displayList.add(new Shape("rectangle", 190, 180, 300, 300 ));
+//        displayList.add(new Shape("oval", 190, 180, 300, 300 ));
         //listeners
+        addMouseListener(this);
+        addMouseMotionListener(this);
     }
 
 
@@ -55,7 +57,10 @@ public class UserContent extends JComponent implements MouseMotionListener, Mous
     }
     @Override
     public void mousePressed(MouseEvent e) {
-
+        int x = e.getX();
+        int y = e.getY();
+        displayList.add(new Shape("rectangle", x, y, 0, 0));
+        repaint();
     }
     @Override
     public void mouseReleased(MouseEvent e) {
@@ -67,7 +72,12 @@ public class UserContent extends JComponent implements MouseMotionListener, Mous
     }
     @Override
     public void mouseDragged(MouseEvent e) {
-
+        Drawn curr = displayList.get(displayList.size() - 1);
+        if (curr instanceof  Shape) {
+            ((Shape) curr).setWidth(e.getX()-((Shape) curr).getX());
+            ((Shape) curr).setHeight(e.getY()-((Shape) curr).getY());
+        }
+        repaint();
     }
     @Override
     public void mouseMoved(MouseEvent e) {

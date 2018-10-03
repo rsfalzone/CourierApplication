@@ -28,6 +28,14 @@ public class Shape extends Drawn {
         return height;
     }
 
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == this) {
