@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.LinkedList;
 import javax.swing.*;
 
 public class CourierApp {
@@ -14,27 +15,44 @@ public class CourierApp {
         tabbedFrame.addTab("Address Book", addressBook);
 
         // Right side
-        JComponent digitalInk = new UserContent();
+        LinkedList<UserContent> userContentList= new LinkedList<>();
+        userContentList.add(new UserContent());
 
         JPanel buttons = new JPanel();
+
+
+
         JButton btnNewPage = new JButton("New Page");
         JButton btnDelPage = new JButton("Delete Page");
         JButton btnPageFwd= new JButton("Page Forward");
         JButton btnPageBack= new JButton("Page Backward");
+
         JRadioButton btnFreeForm = new JRadioButton("Free-form Ink");
         JRadioButton btnRectangle = new JRadioButton("Rectangle");
         JRadioButton btnOval = new JRadioButton("Oval");
         JRadioButton btnText = new JRadioButton("Text");
         JLabel statusBar = new JLabel("Status Bar");
 
-        btnNewPage.addActionListener(e -> statusBar.setText("New Page button clicked."));
+        ButtonGroup btnGroup = new ButtonGroup();
+        btnGroup.add(btnFreeForm);
+        btnGroup.add(btnRectangle);
+        btnGroup.add(btnOval);
+        btnGroup.add(btnText);
+
+        btnNewPage.addActionListener(e -> {
+            statusBar.setText("New Page added to User Content.");
+            userContentList.add(new UserContent());
+            // add to right side
+            // revalidate right side
+            // repaint right side
+        });
         btnDelPage.addActionListener(e -> statusBar.setText("Delete Page button clicked."));
         btnPageFwd.addActionListener(e -> statusBar.setText("Page Forward button clicked."));
         btnPageBack.addActionListener(e -> statusBar.setText("Page Backward button clicked."));
-        btnFreeForm.addActionListener(e -> statusBar.setText("Free-form Ink radiobutton clicked."));
-        btnRectangle.addActionListener(e -> statusBar.setText("Rectangle radiobutton clicked."));
-        btnOval.addActionListener(e -> statusBar.setText("Oval radiobutton clicked."));
-        btnText.addActionListener(e -> statusBar.setText("Text radiobutton clicked."));
+        btnFreeForm.addActionListener(e -> statusBar.setText("User Content is now in " + Mode.FREE + " mode."));
+        btnRectangle.addActionListener(e -> statusBar.setText("User Content is now in " + Mode.RECT + " mode."));
+        btnOval.addActionListener(e -> statusBar.setText("User Content is now in " + Mode.OVAL + " mode."));
+        btnText.addActionListener(e -> statusBar.setText("User Content is now in " + Mode.TEXT + " mode."));
 
         buttons.add(btnNewPage);
         buttons.add(btnDelPage);
@@ -47,7 +65,7 @@ public class CourierApp {
 
         JPanel rightSide = new JPanel();
         rightSide.setLayout(new BorderLayout());
-        rightSide.add(digitalInk, BorderLayout.CENTER);
+        rightSide.add(userContentList.getFirst(), BorderLayout.CENTER);
         rightSide.add(buttons, BorderLayout.SOUTH);
 
         // Split pane
