@@ -53,6 +53,7 @@ public class UserContent extends JComponent implements MouseMotionListener, Mous
                     g2.setColor(Color.YELLOW);
                     g2.fillRect(textbox.getX(), textbox.getY(), textbox.getWidth(), textbox.getHeight());
                     g2.setColor(Color.BLACK);
+                    g2.drawRect(textbox.getX(), textbox.getY(), textbox.getWidth(), textbox.getHeight()); //adds border
                     g2.drawString(textbox.getText(), textbox.getX() + 5, textbox.getY()+ 20);
                     // TODO: Split Text into lines
                 }
