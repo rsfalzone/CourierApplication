@@ -4,11 +4,11 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 
-public class UserContent extends JComponent implements MouseMotionListener, MouseListener, KeyListener {
+public class Canvas extends JComponent implements MouseMotionListener, MouseListener, KeyListener {
     private ArrayList<Drawn> displayList;
     private Mode mode;
 
-    public UserContent(Mode mode) {
+    public Canvas(Mode mode) {
         this.mode = mode;
 //        System.out.println(mode);
         displayList = new ArrayList<>();
@@ -17,7 +17,7 @@ public class UserContent extends JComponent implements MouseMotionListener, Mous
 //        displayList.add(new Shape("oval", 90, 80, 300, 300 ));
 //        displayList.add(new Shape("rectangle", 190, 180, 300, 300 ));
 //        displayList.add(new Shape("oval", 190, 180, 300, 300 ));
-
+//        setPreferredSize();
         // Listeners
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -40,6 +40,7 @@ public class UserContent extends JComponent implements MouseMotionListener, Mous
         g2.drawLine(80, 0, 80, getHeight());
 
         // Draw: Loops over display list to paint.
+        // TODO: Switch Statement
         for (Drawn e: displayList) {
             g2.setColor(Color.BLACK);
             if (e instanceof Shape) {
