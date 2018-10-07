@@ -6,10 +6,10 @@ import java.util.ArrayList;
 
 public class Canvas extends JComponent implements MouseMotionListener, MouseListener, KeyListener {
     private ArrayList<Drawn> displayList;
-    private Mode mode;
+    private Model model;
 
-    public Canvas(Mode mode) {
-        this.mode = mode;
+    public Canvas(Model model) {
+        this.model = model;
 //        System.out.println(mode);
         displayList = new ArrayList<>();
 //        System.out.println(isFocusable());
@@ -93,14 +93,15 @@ public class Canvas extends JComponent implements MouseMotionListener, MouseList
         // Invoked when a mouse button has been pressed on a component.
         int x = e.getX();
         int y = e.getY();
-        if (mode == Mode.FREE) {
+        InkMode mode = model.getInkMode();
+        if (mode == InkMode.FREE) {
             displayList.add(new Stroke("stroke", x, y));
 //            System.out.println("mouse pressed");
-        } else if (mode == Mode.RECT) {
+        } else if (mode == InkMode.RECT) {
             displayList.add(new Shape("rectangle", x, y, 0, 0));
-        } else if (mode == Mode.OVAL) {
+        } else if (mode == InkMode.OVAL) {
             displayList.add(new Shape("oval", x, y, 0, 0));
-        } else if (mode == Mode.TEXT){
+        } else if (mode == InkMode.TEXT){
             displayList.add(new TextBox("text", x, y, 0, 0));
         }
         repaint();
@@ -136,15 +137,12 @@ public class Canvas extends JComponent implements MouseMotionListener, MouseList
         // No special action
     }
 
-    public void setMode(Mode mode) {
-        this.mode = mode;
-    }
-
     @Override
     public void keyTyped(KeyEvent e) {
         //current text focus?
 //        System.out.println("Here");
-        if (mode == Mode.TEXT){
+        InkMode mode = model.getInkMode();
+        if (mode == InkMode.TEXT){
             if (displayList.get(displayList.size() - 1) instanceof TextBox){
                 TextBox textBox = (TextBox) displayList.get(displayList.size() - 1);
                 textBox.setText(textBox.getText() + e.getKeyChar());

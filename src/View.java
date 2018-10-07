@@ -104,10 +104,10 @@ public class View {
         btnPageBack.addActionListener(l);
     }
 
-    public void addInkModeListener(ActionListener l) {
-        btnFreeForm.addActionListener(l);
-        btnRectangle.addActionListener(l);
-        btnOval.addActionListener(l);
-        btnText.addActionListener(l);
+    public void addInkModeListeners(ActionListener lFree, ActionListener lRect, ActionListener lOval, ActionListener lText) {
+        btnFreeForm.addActionListener(lFree);
+        btnRectangle.addActionListener(lRect);
+        btnOval.addActionListener(lOval);
+        btnText.addActionListener(lText);
     }
 }

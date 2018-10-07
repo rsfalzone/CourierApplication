@@ -1,9 +1,9 @@
-public enum Mode {
+public enum InkMode {
     FREE ("Free-form Ink"), RECT ("Rectangle"), OVAL ("Oval"), TEXT ("Text");
 
     private String mode;
 
-    Mode(String s) {
+    InkMode(String s) {
         this.mode = s;
     }
 
