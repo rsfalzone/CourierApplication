@@ -9,8 +9,8 @@ public class Model {
     public Model() {
         this.inkMode = Mode.FREE;
         this.canvasList = new LinkedList<>();
-        this.currIndex = 0;
         this.statusText = new String("Status Bar");
+        this.addCanvas(new Canvas(Mode.FREE));
     }
 
     public Mode getInkMode() {
@@ -24,7 +24,7 @@ public class Model {
         canvasList.add(canvas);
         currIndex = canvasList.size()-1;
     }
-    public void removeCurrCanvas() {
+    public void delCurrCanvas() {
         if (currIndex > 0) {
             canvasList.remove(currIndex);
             currIndex--;

@@ -1,42 +1,59 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.LinkedList;
+import java.awt.event.ActionListener;
 
 public class View {
+    Model model;
 
-    public View() {
+    JTabbedPane LHSide;
+    JPanel RHSide;
+
+    JScrollPane canvasScroll;
+    JLabel statusBar;
+
+    JButton btnNewPage;
+    JButton btnDelPage;
+    JButton btnPageFwd;
+    JButton btnPageBack;
+    JRadioButton btnFreeForm;
+    JRadioButton btnRectangle;
+    JRadioButton btnOval;
+    JRadioButton btnText;
+
+
+    public View(Model model) {
+        this.model = model;
+
+    // LH Side
         JPanel webBrowser = new WebBrowser();
         JPanel addressBook = new AddressBook();
 
-        // LH Side
-        JTabbedPane LHSide = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
-        LHSide.setPreferredSize(new Dimension(600,500));
+        LHSide = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+//        LHSide.setPreferredSize(new Dimension(600, 500)); //TODO: list as constants ^^
         LHSide.addTab("Web Browser", webBrowser);
         LHSide.addTab("Address Book", addressBook);
 
-        // RH side
-        final Mode[] mode = new Mode[1];
-        mode[0] = Mode.FREE;
-        final LinkedList<Canvas> canvasList = new LinkedList<>();
-        final int[] curr = new int[1];
-        curr[0] = 0;
-        canvasList.add(new Canvas(Mode.FREE));
+    //RH Side
+        // Canvas
+        canvasScroll = new JScrollPane(model.getCurrCanvas());
+//        JComponent canvasScroll = new Canvas(Mode.FREE);
+//        canvasScroll.add(new Canvas(Mode.FREE), BorderLayout.CENTER);
+        // TODO: Scroll bar configuration
 
-        // Page Navigation Buttons
-        JPanel buttonPanel = new JPanel();
-        JButton btnNewPage = new JButton("New Page");
-        JButton btnDelPage = new JButton("Delete Page");
-        JButton btnPageFwd= new JButton("Page Forward");
-        JButton btnPageBack= new JButton("Page Backward");
+        // Canvas Page Navigation buttons
+        btnNewPage = new JButton("New Page");
+        btnDelPage = new JButton("Delete Page");
+        btnPageFwd = new JButton("Page Forward");
+        btnPageBack = new JButton("Page Backward");
         btnDelPage.setEnabled(false);
         btnPageFwd.setEnabled(false);
         btnPageBack.setEnabled(false);
 
         // Ink Mode Buttons
-        JRadioButton btnFreeForm = new JRadioButton("Free-form Ink");
-        JRadioButton btnRectangle = new JRadioButton("Rectangle");
-        JRadioButton btnOval = new JRadioButton("Oval");
-        JRadioButton btnText = new JRadioButton("Text");
+        btnFreeForm = new JRadioButton("Free-form Ink");
+        btnRectangle = new JRadioButton("Rectangle");
+        btnOval = new JRadioButton("Oval");
+        btnText = new JRadioButton("Text");
 
         ButtonGroup btnGroup = new ButtonGroup();
         btnGroup.add(btnFreeForm);
@@ -45,6 +62,8 @@ public class View {
         btnGroup.add(btnText);
         btnFreeForm.setSelected(true);
 
+        // Button Panel
+        JPanel buttonPanel = new JPanel();
         buttonPanel.add(btnNewPage);
         buttonPanel.add(btnDelPage);
         buttonPanel.add(btnPageFwd);
@@ -54,11 +73,41 @@ public class View {
         buttonPanel.add(btnOval);
         buttonPanel.add(btnText);
 
-        JLabel statusBar = new JLabel("Status Bar");
+        RHSide = new JPanel(new BorderLayout());
+        RHSide.add(canvasScroll, BorderLayout.CENTER);
+        RHSide.add(buttonPanel, BorderLayout.SOUTH);
 
-        JPanel rightSide = new JPanel();
-        rightSide.setLayout(new BorderLayout());
-        rightSide.add(canvasList.getFirst(), BorderLayout.CENTER);
-        rightSide.add(buttonPanel, BorderLayout.SOUTH);
+        // Main Frame
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, LHSide,  RHSide);
+        statusBar = new JLabel(model.getStatusText());
+
+        JFrame mainFrame = new JFrame("Courier App");
+        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        mainFrame.setLayout(new BorderLayout()); //TODO: Cuts off buttons?
+        mainFrame.add(splitPane, BorderLayout.CENTER);
+        mainFrame.add(statusBar,BorderLayout.SOUTH);
+//        mainFrame.setPreferredSize(new Dimension(1200,500)); //TODO: list as constants ^^
+        mainFrame.pack();
+        mainFrame.setVisible(true);
+    }
+
+    public void addNewPageListener(ActionListener l) {
+        btnNewPage.addActionListener(l);
+    }
+    public void addDelPageListener(ActionListener l) {
+        btnDelPage.addActionListener(l);
+    }
+    public void addPageFwdListener(ActionListener l) {
+        btnPageFwd.addActionListener(l);
+    }
+    public void addPageBackListener(ActionListener l) {
+        btnPageBack.addActionListener(l);
+    }
+
+    public void addInkModeListener(ActionListener l) {
+        btnFreeForm.addActionListener(l);
+        btnRectangle.addActionListener(l);
+        btnOval.addActionListener(l);
+        btnText.addActionListener(l);
     }
 }
