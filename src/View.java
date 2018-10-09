@@ -36,8 +36,6 @@ public class View {
     //RH Side
         // Canvas
         canvasScroll = new JScrollPane(model.getCurrCanvas());
-//        JComponent canvasScroll = new Canvas(Mode.FREE);
-//        canvasScroll.add(new Canvas(Mode.FREE), BorderLayout.CENTER);
         // TODO: Scroll bar configuration
 
         // Canvas Page Navigation buttons
@@ -91,6 +89,7 @@ public class View {
         mainFrame.setVisible(true);
     }
 
+    // TODO: Best way to add listeners?
     public void addNewPageListener(ActionListener l) {
         btnNewPage.addActionListener(l);
     }

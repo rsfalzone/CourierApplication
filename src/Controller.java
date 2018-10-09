@@ -22,6 +22,10 @@ public class Controller {
                 new InkModeListener(InkMode.TEXT));
     }
 
+    // TODO: MVC Questions
+    //      How to update the View based on changes to Model?
+    //          - Through Controller manipulation?
+    //          - Broadcasting change in Model, Listening in View
     class InkModeListener implements ActionListener {
         InkMode inkMode;
 
@@ -32,8 +36,9 @@ public class Controller {
         public void actionPerformed(ActionEvent e) {
             model.setInkMode(inkMode);
             model.setStatusText(
-                    String.format("User Content is now in %s mode.",
+                    String.format("The Canvas is now in %s mode.",
                             model.getInkMode()));
+            // TODO: Update View
         }
     }
 
@@ -76,26 +81,29 @@ public class Controller {
                     break;
             }
 
-            // Update View
+            // Update View (pt. 2)
             view.canvasScroll = new JScrollPane(model.getCurrCanvas());
             view.statusBar.setText(model.getStatusText());
             view.RHSide.add(view.canvasScroll, BorderLayout.CENTER);
             view.RHSide.revalidate();
             view.RHSide.repaint();
 
-            // Button Control (pt. 2)
+            // Button Control
             if (model.getCanvasListSize() == 1) {
+                // Only one Canvas
                 view.btnDelPage.setEnabled(false);
                 view.btnPageFwd.setEnabled(false);
                 view.btnPageBack.setEnabled(false);
             } else {
                 view.btnDelPage.setEnabled(true);
                 if (model.getCurrIndex() == 0) {
+                    // At first Canvas
                     view.btnPageBack.setEnabled(false);
                 } else {
                     view.btnPageBack.setEnabled(true);
                 }
                 if (model.getCurrIndex() == model.getCanvasListSize() - 1) {
+                    // At last Canvas
                     view.btnPageFwd.setEnabled(false);
                 } else {
                     view.btnPageFwd.setEnabled(true);

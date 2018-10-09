@@ -50,25 +50,32 @@ public class AddressBook extends JPanel{
         JScrollPane leftTop = new JScrollPane(table);
 
         //info
+        JLabel header = new JLabel("Contact: ");
+        header.setFont(new Font("Arial Black", Font.BOLD, 24));
+
         JTextArea info = new JTextArea();
         info.setFont(new Font("Arial Black", Font.BOLD, 24));
-        String infoText = "Contact\n\nLast Name: %s\nFirst Name: %s\nPhone Number: %s\nEmail: %s\nCity: %s\nState: %s";
+        String infoText = "Last Name: %s\nFirst Name: %s\nPhone Number: %s\nEmail: %s\nCity: %s\nState: %s";
         JScrollPane leftBottom = new JScrollPane(info);
 
         table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
             public void valueChanged(ListSelectionEvent event) {
-                String first = table.getValueAt(table.getSelectedRow(),0).toString();
-                String last = table.getValueAt(table.getSelectedRow(),1).toString();
+                String last = table.getValueAt(table.getSelectedRow(),0).toString();
+                String first = table.getValueAt(table.getSelectedRow(),1).toString();
                 String phone = table.getValueAt(table.getSelectedRow(),2).toString();
                 String email = table.getValueAt(table.getSelectedRow(),3).toString();
                 String city = table.getValueAt(table.getSelectedRow(),4).toString();
                 String state = table.getValueAt(table.getSelectedRow(),5).toString();
-                info.setText(String.format(infoText, first, last, phone, email, city, state));
+                header.setText(String.format("Contact: %s", String.join(" ", first, last)));
+                info.setText(String.format(infoText, last, first, phone, email, city, state));
             }
         });
 
         setLayout(new GridLayout(2, 1));
         add(leftTop);
-        add(leftBottom);
+        JPanel bottom = new JPanel(new BorderLayout());
+        bottom.add(header, BorderLayout.NORTH);
+        bottom.add(leftBottom, BorderLayout.CENTER);
+        add(bottom);
     }
 }
