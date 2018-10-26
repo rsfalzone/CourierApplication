@@ -178,7 +178,8 @@ public class Canvas extends JComponent implements MouseMotionListener, MouseList
                 model.setStatusText("'Delete' gesture recognized.");
                 view.statusBar.setText(model.getStatusText());
             } else {
-                System.out.println("Gesture unrecognized.");
+//                System.out.println("Gesture unrecognized.");
+                model.setStatusText("Gesture unrecognized.");
                 view.statusBar.setText(model.getStatusText());
             }
         }
