@@ -56,7 +56,7 @@ public class Controller {
             // Update Model
             switch (action) {
                 case ADD:
-                    model.addCanvas(new Canvas(model));
+                    model.addCanvas(new Canvas(model, view));
                     model.setStatusText(
                             String.format("New Page added to the Canvas. Current Page: (%d/%d)",
                                     model.getCurrIndex()+1, model.getCanvasListSize()));

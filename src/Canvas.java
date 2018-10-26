@@ -7,10 +7,12 @@ import javax.swing.SwingUtilities;
 
 public class Canvas extends JComponent implements MouseMotionListener, MouseListener, KeyListener {
     private Model model;
+    private View view;
     private ArrayList<Drawn> displayList;
 
-    public Canvas(Model model) {
+    public Canvas(Model model, View view){
         this.model = model;
+        this.view = view;
 //        System.out.println(mode);
         displayList = new ArrayList<>();
 
@@ -155,9 +157,30 @@ public class Canvas extends JComponent implements MouseMotionListener, MouseList
                     }
                 }
             }
-            System.out.println(pattern);
             // check for pattern match
             // call appropriate functions
+            if(pattern.matches("^.{0,2}+[SEB]+[SWC]+.{0,2}+$")) {
+//                System.out.println(">");
+                model.setStatusText("'Next Page' gesture recognized.");
+                view.btnPageFwd.doClick();
+                view.statusBar.setText(model.getStatusText());
+            } else if (pattern.matches("^.{0,2}+[SWC]+[SEB]+.{0,2}+$")) {
+//                System.out.println("<");
+                model.setStatusText("'Back Page' gesture recognized.");
+                view.btnPageBack.doClick();
+                view.statusBar.setText(model.getStatusText());
+            } else if (pattern.matches("^.{0,2}+[SWC]+[SEB]+[NEA]+[NWD]+.{0,2}+$")) {
+//                System.out.println("o");
+                model.setStatusText("'Select' gesture recognized.");
+                view.statusBar.setText(model.getStatusText());
+            } else if (pattern.matches("^.{0,2}+[SWC]+[SEB]+[NEA]+[NWD]+[SBC]+.{0,2}+$")){
+//                System.out.println("phi");
+                model.setStatusText("'Delete' gesture recognized.");
+                view.statusBar.setText(model.getStatusText());
+            } else {
+                System.out.println("Gesture unrecognized.");
+                view.statusBar.setText(model.getStatusText());
+            }
         }
         repaint();
         requestFocusInWindow();

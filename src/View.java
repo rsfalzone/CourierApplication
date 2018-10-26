@@ -35,7 +35,7 @@ public class View {
 
     //RH Side
         // Canvas
-        canvasScroll = new JScrollPane(model.getCurrCanvas());
+        canvasScroll = new JScrollPane();
         // TODO: Scroll bar configuration
 
         // Canvas Page Navigation buttons

@@ -5,6 +5,7 @@ public class CourierApp {
         Model model = new Model();
         View view = new View(model);
         Controller controller = new Controller(model, view);
+        view.btnNewPage.doClick();
     }
     public static void main(String[] args) {
         SwingUtilities.invokeLater(CourierApp::initGUI);

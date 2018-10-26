@@ -14,7 +14,7 @@ public class Model {
         this.inkMode = InkMode.FREE;
         this.canvasList = new LinkedList<>();
         this.statusText = new String("Status Bar");
-        this.addCanvas(new Canvas(this)); // good??
+//        this.addCanvas(new Canvas(this, )); // good??
     }
     // Ink mode modifiers
     public InkMode getInkMode() {
