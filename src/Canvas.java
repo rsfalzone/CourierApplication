@@ -2,16 +2,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import javax.swing.SwingUtilities;
 
 
 public class Canvas extends JComponent implements MouseMotionListener, MouseListener, KeyListener {
-    private ArrayList<Drawn> displayList;
     private Model model;
+    private ArrayList<Drawn> displayList;
 
     public Canvas(Model model) {
         this.model = model;
 //        System.out.println(mode);
         displayList = new ArrayList<>();
+
 //        System.out.println(isFocusable());
 //        displayList.add(new Shape("rectangle", 90, 80, 300, 300 ));
 //        displayList.add(new Shape("oval", 90, 80, 300, 300 ));
@@ -60,6 +62,9 @@ public class Canvas extends JComponent implements MouseMotionListener, MouseList
                 }
             } else {
                 ArrayList<Integer> points  = ((Stroke) e).getPoints();
+                if (e.getType().equals("gesture")) {
+                    g2.setColor(Color.BLUE);
+                }
                 for (int i = 2; i < points.size(); i = i+2){
                     g2.drawLine(points.get(i-2), points.get(i-1), points.get(i), points.get(i+1));
                 }
@@ -93,18 +98,23 @@ public class Canvas extends JComponent implements MouseMotionListener, MouseList
         // Invoked when a mouse button has been pressed on a component.
         int x = e.getX();
         int y = e.getY();
-        InkMode mode = model.getInkMode();
-        if (mode == InkMode.FREE) {
-            displayList.add(new Stroke("stroke", x, y));
-//            System.out.println("mouse pressed");
-        } else if (mode == InkMode.RECT) {
-            displayList.add(new Shape("rectangle", x, y, 0, 0));
-        } else if (mode == InkMode.OVAL) {
-            displayList.add(new Shape("oval", x, y, 0, 0));
-        } else if (mode == InkMode.TEXT){
-            displayList.add(new TextBox("text", x, y, 0, 0));
+        if (SwingUtilities.isLeftMouseButton(e)) {
+            InkMode mode = model.getInkMode();
+            if (mode == InkMode.FREE) {
+                displayList.add(new Stroke("stroke", x, y));
+                //            System.out.println("mouse pressed");
+            } else if (mode == InkMode.RECT) {
+                displayList.add(new Shape("rectangle", x, y, 0, 0));
+            } else if (mode == InkMode.OVAL) {
+                displayList.add(new Shape("oval", x, y, 0, 0));
+            } else if (mode == InkMode.TEXT) {
+                displayList.add(new TextBox("text", x, y, 0, 0));
+            }
+            repaint();
+        } else if (SwingUtilities.isRightMouseButton(e)) {
+            displayList.add(new Stroke("gesture", x, y));
+            repaint();
         }
-        repaint();
     }
 
     @Override
@@ -113,6 +123,43 @@ public class Canvas extends JComponent implements MouseMotionListener, MouseList
         // Could hold a curr variable that is changed while mouse is dragged.
         // this curr would then be added to the display list upon release.
         // current implementation relies on current mode matching mode of most recent drawn
+        if (SwingUtilities.isRightMouseButton(e)) {
+            Stroke gesture = (Stroke) displayList.remove(displayList.size() - 1);
+            // create pattern
+            ArrayList<Integer> points = gesture.getPoints();
+            String pattern = new String();
+            for (int i = 2; i < points.size(); i = i+2){
+                int dX = points.get(i) - points.get(i-2);
+                int dY = points.get(i+1) - points.get(i-1);
+                if (dX > 0) {
+                    if (dY > 0) {
+                        pattern += "B";
+                    } else if (dY < 0) {
+                        pattern += "A";
+                    } else {
+                        pattern += "E";
+                    }
+                } else if (dX < 0) {
+                    if (dY > 0) {
+                        pattern += "C";
+                    } else if (dY < 0) {
+                        pattern += "D";
+                    } else {
+                        pattern += "W";
+                    }
+                } else {
+                    if (dY > 0) {
+                        pattern += "S";
+                    } else {
+                        pattern += "N";
+                    }
+                }
+            }
+            System.out.println(pattern);
+            // check for pattern match
+            // call appropriate functions
+        }
+        repaint();
         requestFocusInWindow();
     }
 
@@ -120,13 +167,17 @@ public class Canvas extends JComponent implements MouseMotionListener, MouseList
     public void mouseDragged(MouseEvent e) {
         // Invoked when a mouse button is pressed on a component and then dragged.
         Drawn curr = displayList.get(displayList.size() - 1);
-        if (curr instanceof  Shape) {
-            ((Shape) curr).setWidth(e.getX()-((Shape) curr).getX());
-            ((Shape) curr).setHeight(e.getY()-((Shape) curr).getY());
-            if (curr instanceof TextBox) {
-                ((TextBox) curr).setText("");
+        if (SwingUtilities.isLeftMouseButton(e)) {
+            if (curr instanceof Shape) {
+                ((Shape) curr).setWidth(e.getX() - ((Shape) curr).getX());
+                ((Shape) curr).setHeight(e.getY() - ((Shape) curr).getY());
+                if (curr instanceof TextBox) {
+                    ((TextBox) curr).setText("");
+                }
+            } else if (curr instanceof Stroke) {
+                ((Stroke) curr).add(e.getX(), e.getY());
             }
-        } else if (curr instanceof Stroke) {
+        } else if (SwingUtilities.isRightMouseButton(e)) {
             ((Stroke) curr).add(e.getX(), e.getY());
         }
         repaint();
