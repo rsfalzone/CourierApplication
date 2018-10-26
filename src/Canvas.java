@@ -169,11 +169,11 @@ public class Canvas extends JComponent implements MouseMotionListener, MouseList
                 model.setStatusText("'Back Page' gesture recognized.");
                 view.btnPageBack.doClick();
                 view.statusBar.setText(model.getStatusText());
-            } else if (pattern.matches("^.{0,2}+[SWC]+[SEB]+[NEA]+[NWD]+.{0,2}+$")) {
+            } else if (pattern.matches("^.{0,2}+[DWC]+[SWC]+[SEB]+[NEA]+[NWD]+[DWC]+.{0,2}+$")) {
 //                System.out.println("o");
                 model.setStatusText("'Select' gesture recognized.");
                 view.statusBar.setText(model.getStatusText());
-            } else if (pattern.matches("^.{0,2}+[SWC]+[SEB]+[NEA]+[NWD]+[SBC]+.{0,2}+$")){
+            } else if (pattern.matches("^.{0,2}+[DWC]+[SWC]+[SEB]+[NEA]+[NWD]+[DWC]+[SBC]+.{0,2}+$")){
 //                System.out.println("phi");
                 model.setStatusText("'Delete' gesture recognized.");
                 view.statusBar.setText(model.getStatusText());
