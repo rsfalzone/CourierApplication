@@ -230,10 +230,13 @@ public class Canvas extends JComponent implements MouseMotionListener, MouseList
     @Override
     public void keyPressed(KeyEvent e) {
 //        System.out.println("Here1");
+        //if right click in the right side then start animation
+
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
 //        System.out.println("Here2");
+        //if right click and past midway point, finish animation.
     }
 }

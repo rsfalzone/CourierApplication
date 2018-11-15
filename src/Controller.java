@@ -7,6 +7,9 @@ import java.awt.image.BufferedImage;
 public class Controller {
     Model model;
     View view;
+    int i = 0;
+    Timer timer;
+    int distance;
 
     public Controller(Model model, View view) {
         this.model = model;
@@ -73,26 +76,25 @@ public class Controller {
                                     model.getCurrIndex()+1, model.getCanvasListSize()));
                     break;
                 case FWD:
-                    curr = makeOffscreenImage(model.getCurrCanvas());
-                    next = makeOffscreenImage(model.getNextCanvas());
-                    pageTurned = turnPageAnimation(curr, next);
-                    if (pageTurned) {
-                        model.NextCanvas();
-                        model.setStatusText(
-                                String.format("Page forward in Canvas. Current Page: (%d/%d)",
-                                        model.getCurrIndex() + 1, model.getCanvasListSize()));
-                    }
+//                    pageTurned = turnPageAnimation();
+//                    if (pageTurned) {
+                    model.NextCanvas();
+                    model.setStatusText(
+                            String.format("Page forward in Canvas. Current Page: (%d/%d)",
+                                    model.getCurrIndex() + 1, model.getCanvasListSize()));
+//                    }
                     break;
                 case BCK:
-                    curr = makeOffscreenImage(model.getCurrCanvas());
-                    next = makeOffscreenImage(model.getPrevCanvas());
-                    pageTurned = turnPageAnimation(curr, next);
-                    if (pageTurned) {
-                        model.PrevCanvas();
-                        model.setStatusText(
-                                String.format("Page backward in Canvas. Current Page: (%d/%d)",
-                                        model.getCurrIndex() + 1, model.getCanvasListSize()));
-                    }
+//                    curr = makeOffscreenImage(model.getCurrCanvas());
+//                    next = makeOffscreenImage(model.getPrevCanvas());
+//                    pageTurned = turnPageAnimation(curr, next);
+//                    if (pageTurned) {
+//                    pageTurned = turnPageAnimation();
+                    model.PrevCanvas();
+                    model.setStatusText(
+                            String.format("Page backward in Canvas. Current Page: (%d/%d)",
+                                    model.getCurrIndex() + 1, model.getCanvasListSize()));
+//                    }
                     break;
             }
 
@@ -143,9 +145,26 @@ public class Controller {
         // return the image
         return offscreenImage;
     }
-    public boolean turnPageAnimation(BufferedImage curr, BufferedImage next) {
-        model.setPageTurning(true);
+    public boolean turnPageAnimation() {
 
+        model.setPageTurning(true);
+        timer = new Timer(100, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                BufferedImage curr = makeOffscreenImage(model.getCurrCanvas());
+                BufferedImage next = makeOffscreenImage(model.getNextCanvas());
+                distance = 0;
+                if (i < 4) {
+                    distance += curr.getWidth()/5;
+                    i++;
+                } else {
+                    i = 0;
+                    timer.stop();
+                }
+                System.out.println(i);
+            }
+        });
+        timer.start();
         model.setPageTurning(false);
         return true;
     }
