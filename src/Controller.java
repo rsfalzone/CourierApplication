@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 
 public class Controller {
     Model model;
@@ -68,12 +69,14 @@ public class Controller {
                                     model.getCurrIndex()+1, model.getCanvasListSize()));
                     break;
                 case FWD:
+                    model.setPageTurning(true);
                     model.NextCanvas();
                     model.setStatusText(
                             String.format("Page forward in Canvas. Current Page: (%d/%d)",
                                     model.getCurrIndex()+1, model.getCanvasListSize()));
                     break;
                 case BCK:
+                    model.setPageTurning(true);
                     model.PrevCanvas();
                     model.setStatusText(
                             String.format("Page backward in Canvas. Current Page: (%d/%d)",
@@ -114,5 +117,18 @@ public class Controller {
 
     enum NavAction {
         ADD, DEL, FWD, BCK
+    }
+
+    public BufferedImage makeOffscreenImage (JComponent source) {
+        // Create our BufferedImage and get a Graphics object for it
+        GraphicsConfiguration gfxConfig = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
+        BufferedImage offscreenImage = gfxConfig.createCompatibleImage(source.getWidth(), source.getHeight());
+        Graphics2D offscreenGraphics = (Graphics2D) offscreenImage.getGraphics();
+
+        // Tell the component to paint itself onto the image
+        source.paint(offscreenGraphics);
+
+        // return the image
+        return offscreenImage;
     }
 }

@@ -5,6 +5,7 @@ public class Model {
     private LinkedList<Canvas> canvasList;
     private int currIndex;
     private String statusText;
+    private Boolean pageTurning = false;
 
     // TODO: Canvas must access inkMode in model
     //          Current structure requires:
@@ -74,5 +75,13 @@ public class Model {
     }
     public void setStatusText(String text) {
         statusText = text;
+    }
+
+    public void setPageTurning(Boolean pageTurning) {
+        this.pageTurning = pageTurning;
+    }
+
+    public Boolean getPageTurning() {
+        return pageTurning;
     }
 }
