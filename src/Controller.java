@@ -51,6 +51,10 @@ public class Controller {
         }
 
         public void actionPerformed(ActionEvent e) {
+            BufferedImage curr;
+            BufferedImage next;
+            Boolean pageTurned;
+
             // Update View (pt. 1)
             view.RHSide.remove(view.canvasScroll);
 
@@ -69,18 +73,26 @@ public class Controller {
                                     model.getCurrIndex()+1, model.getCanvasListSize()));
                     break;
                 case FWD:
-                    model.setPageTurning(true);
-                    model.NextCanvas();
-                    model.setStatusText(
-                            String.format("Page forward in Canvas. Current Page: (%d/%d)",
-                                    model.getCurrIndex()+1, model.getCanvasListSize()));
+                    curr = makeOffscreenImage(model.getCurrCanvas());
+                    next = makeOffscreenImage(model.getNextCanvas());
+                    pageTurned = turnPageAnimation(curr, next);
+                    if (pageTurned) {
+                        model.NextCanvas();
+                        model.setStatusText(
+                                String.format("Page forward in Canvas. Current Page: (%d/%d)",
+                                        model.getCurrIndex() + 1, model.getCanvasListSize()));
+                    }
                     break;
                 case BCK:
-                    model.setPageTurning(true);
-                    model.PrevCanvas();
-                    model.setStatusText(
-                            String.format("Page backward in Canvas. Current Page: (%d/%d)",
-                                    model.getCurrIndex()+1, model.getCanvasListSize()));
+                    curr = makeOffscreenImage(model.getCurrCanvas());
+                    next = makeOffscreenImage(model.getPrevCanvas());
+                    pageTurned = turnPageAnimation(curr, next);
+                    if (pageTurned) {
+                        model.PrevCanvas();
+                        model.setStatusText(
+                                String.format("Page backward in Canvas. Current Page: (%d/%d)",
+                                        model.getCurrIndex() + 1, model.getCanvasListSize()));
+                    }
                     break;
             }
 
@@ -130,5 +142,11 @@ public class Controller {
 
         // return the image
         return offscreenImage;
+    }
+    public boolean turnPageAnimation(BufferedImage curr, BufferedImage next) {
+        model.setPageTurning(true);
+
+        model.setPageTurning(false);
+        return true;
     }
 }

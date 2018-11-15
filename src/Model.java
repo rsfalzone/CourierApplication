@@ -40,6 +40,8 @@ public class Model {
         }
         return false;
     }
+
+    // Sets the current canvas to the next canvas
     public boolean NextCanvas(){
         if (currIndex < canvasList.size() - 1) {
             currIndex++;
@@ -47,6 +49,8 @@ public class Model {
         }
         return false;
     }
+
+    // Sets the current canvas to the prev canvas
     public boolean PrevCanvas(){
         if (currIndex > 0) {
             currIndex--;
@@ -64,6 +68,20 @@ public class Model {
     }
     public Canvas getCurrCanvas() {
         return canvasList.get(currIndex);
+    }
+    public Canvas getNextCanvas() {
+        if (currIndex < canvasList.size() - 1) {
+            return canvasList.get(currIndex + 1);
+        } else {
+            return null;
+        }
+    }
+    public Canvas getPrevCanvas() {
+        if (currIndex > 0) {
+            return canvasList.get(currIndex - 1);
+        } else {
+            return null;
+        }
     }
     public LinkedList<Canvas> getCanvasList() {
         return canvasList;
