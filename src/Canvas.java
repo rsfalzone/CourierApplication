@@ -34,43 +34,47 @@ public class Canvas extends JComponent implements MouseMotionListener, MouseList
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        // Background
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(Color.WHITE);
-        g2.fillRect(0, 0, getWidth(), getHeight());
-        g2.setColor(Color.BLUE);
-        for (int i = 80; i < getHeight(); i+=20) {
-            g2.drawLine(0, i, getWidth(), i);
-        }
-        g2.setColor(Color.RED);
-        g2.drawLine(80, 0, 80, getHeight());
-
+        if (model.getPageTurning()) {
+            g.drawImage(model.portion1, 0, 0, this);
+            g.drawImage(model.portion3, model.getCurrCanvas().getWidth()/2, 0, this);
+        } else {
+            // Background
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setColor(Color.WHITE);
+            g2.fillRect(0, 0, getWidth(), getHeight());
+            g2.setColor(Color.BLUE);
+            for (int i = 80; i < getHeight(); i+=20) {
+                g2.drawLine(0, i, getWidth(), i);
+            }
+            g2.setColor(Color.RED);
+            g2.drawLine(80, 0, 80, getHeight());
         // Draw: Loops over display list to paint.
         // TODO: Switch Statement
-        for (Drawn e: displayList) {
-            g2.setColor(Color.BLACK);
-            if (e instanceof Shape) {
-                Shape shape = (Shape) e;
-                if (shape.getType().equals("rectangle")) {
-                    g2.drawRect(shape.getX(), shape.getY(),shape.getWidth(), shape.getHeight());
-                } else if (shape.getType().equals("oval")) {
-                    g2.drawOval(shape.getX(), shape.getY(), shape.getWidth(), shape.getHeight());
-                } else if (shape.getType().equals("text")) {
-                    TextBox textbox = (TextBox) shape;
-                    g2.setColor(Color.YELLOW);
-                    g2.fillRect(textbox.getX(), textbox.getY(), textbox.getWidth(), textbox.getHeight());
-                    g2.setColor(Color.BLACK);
-                    g2.drawRect(textbox.getX(), textbox.getY(), textbox.getWidth(), textbox.getHeight()); //adds border
-                    g2.drawString(textbox.getText(), textbox.getX() + 5, textbox.getY()+ 20);
-                    // TODO: Split Text into lines
-                }
-            } else {
-                ArrayList<Integer> points  = ((Stroke) e).getPoints();
-                if (e.getType().equals("gesture")) {
-                    g2.setColor(Color.BLUE);
-                }
-                for (int i = 2; i < points.size(); i = i+2){
-                    g2.drawLine(points.get(i-2), points.get(i-1), points.get(i), points.get(i+1));
+            for (Drawn e: displayList) {
+                g2.setColor(Color.BLACK);
+                if (e instanceof Shape) {
+                    Shape shape = (Shape) e;
+                    if (shape.getType().equals("rectangle")) {
+                        g2.drawRect(shape.getX(), shape.getY(), shape.getWidth(), shape.getHeight());
+                    } else if (shape.getType().equals("oval")) {
+                        g2.drawOval(shape.getX(), shape.getY(), shape.getWidth(), shape.getHeight());
+                    } else if (shape.getType().equals("text")) {
+                        TextBox textbox = (TextBox) shape;
+                        g2.setColor(Color.YELLOW);
+                        g2.fillRect(textbox.getX(), textbox.getY(), textbox.getWidth(), textbox.getHeight());
+                        g2.setColor(Color.BLACK);
+                        g2.drawRect(textbox.getX(), textbox.getY(), textbox.getWidth(), textbox.getHeight()); //adds border
+                        g2.drawString(textbox.getText(), textbox.getX() + 5, textbox.getY() + 20);
+                        // TODO: Split Text into lines
+                    }
+                } else {
+                    ArrayList<Integer> points = ((Stroke) e).getPoints();
+                    if (e.getType().equals("gesture")) {
+                        g2.setColor(Color.BLUE);
+                    }
+                    for (int i = 2; i < points.size(); i = i + 2) {
+                        g2.drawLine(points.get(i - 2), points.get(i - 1), points.get(i), points.get(i + 1));
+                    }
                 }
             }
         }
@@ -243,24 +247,43 @@ public class Canvas extends JComponent implements MouseMotionListener, MouseList
     }
 
     public boolean turnPageAnimation() {
-
+        //timer
+        //action performed
+        //action event listener
+//            calculate values for portions
+            // make portions using subimage
+            // incremet timer ticks
+            // check how many there have been
+        //start timer.
+        model.curr = makeOffscreenImage(model.getCurrCanvas());
+        model.next = makeOffscreenImage(model.getNextCanvas());
         model.setPageTurning(true);
         timer = new Timer(100, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                BufferedImage curr = makeOffscreenImage(model.getCurrCanvas());
-                BufferedImage next = makeOffscreenImage(model.getNextCanvas());
                 if (model.i < 4) {
+                    // make portions
+//                    System.out.print("image is null: ");
+//                    System.out.println(model.curr == null);
+//                    System.out.print("Canvas is null: ");
+//                    System.out.println(model.getCurrCanvas() == null);
+                    model.portion1 = model.curr.getSubimage(0, 0, model.getCurrCanvas().getWidth()/2 - 10, model.getCurrCanvas().getHeight());
+//                    model.portion2 = offscreenImage.getSubimage(x, y, width, height);
+                    model.portion3 = model.next.getSubimage(model.getCurrCanvas().getWidth()/2, 0, model.getCurrCanvas().getWidth()/2, model.getCurrCanvas().getHeight());
+                    // set portions
                     model.i++;
+                    model.getCurrCanvas().repaint();
                 } else {
+                    model.setPageTurning(false);
                     model.i = 0;
+                    view.RHSide.revalidate();
+                    view.RHSide.repaint();
                     timer.stop();
                 }
                 System.out.println(model.i);
             }
         });
         timer.start();
-        model.setPageTurning(false);
         return true;
     }
     public BufferedImage makeOffscreenImage (JComponent source) {
@@ -276,4 +299,26 @@ public class Canvas extends JComponent implements MouseMotionListener, MouseList
         return offscreenImage;
     }
 
+    public void buttonControl(){
+        if (model.getCanvasListSize() == 1) {
+            // Only one Canvas
+            view.btnDelPage.setEnabled(false);
+            view.btnPageFwd.setEnabled(false);
+            view.btnPageBack.setEnabled(false);
+        } else {
+            view.btnDelPage.setEnabled(true);
+            if (model.getCurrIndex() == 0) {
+                // At first Canvas
+                view.btnPageBack.setEnabled(false);
+            } else {
+                view.btnPageBack.setEnabled(true);
+            }
+            if (model.getCurrIndex() == model.getCanvasListSize() - 1) {
+                // At last Canvas
+                view.btnPageFwd.setEnabled(false);
+            } else {
+                view.btnPageFwd.setEnabled(true);
+            }
+        }
+    }
 }

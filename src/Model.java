@@ -1,4 +1,5 @@
 import java.awt.image.BufferedImage;
+import java.nio.Buffer;
 import java.sql.BatchUpdateException;
 import java.util.LinkedList;
 
@@ -11,7 +12,9 @@ public class Model {
     int i;
     BufferedImage curr;
     BufferedImage next;
-
+    BufferedImage portion1;
+    BufferedImage portion2;
+    BufferedImage portion3;
 
     // TODO: Canvas must access inkMode in model
     //          Current structure requires:

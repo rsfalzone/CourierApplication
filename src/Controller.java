@@ -67,6 +67,7 @@ public class Controller {
                     model.setStatusText(
                             String.format("Page removed from the Canvas. Current Page: (%d/%d)",
                                     model.getCurrIndex() + 1, model.getCanvasListSize()));
+
                     break;
             }
 
@@ -117,6 +118,7 @@ public class Controller {
             // Update Model
             switch (action) {
                 case FWD:
+                    model.getCurrCanvas().turnPageAnimation();
                     model.NextCanvas();
                     model.setStatusText(
                             String.format("Page forward in Canvas. Current Page: (%d/%d)",
@@ -131,12 +133,14 @@ public class Controller {
             }
 
             // Update View (pt. 2)
+            System.out.print("page turning:");
+            System.out.println(model.getPageTurning());
             view.canvasScroll = new JScrollPane(model.getCurrCanvas());
             view.statusBar.setText(model.getStatusText());
             view.RHSide.add(view.canvasScroll, BorderLayout.CENTER);
             view.RHSide.revalidate();
             view.RHSide.repaint();
-
+            view.RHSide.repaint();
             // Button Control
             buttonControl();
         }
