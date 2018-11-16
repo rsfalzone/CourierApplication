@@ -12,6 +12,7 @@ public class Canvas extends JComponent implements MouseMotionListener, MouseList
     private ArrayList<Drawn> displayList;
     Timer timer;
 
+
     public Canvas(Model model, View view){
         this.model = model;
         this.view = view;
@@ -35,8 +36,9 @@ public class Canvas extends JComponent implements MouseMotionListener, MouseList
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (model.getPageTurning()) {
-            g.drawImage(model.portion1, 0, 0, this);
-            g.drawImage(model.portion3, model.getCurrCanvas().getWidth()/2, 0, this);
+            if (model.portion1 != null) g.drawImage(model.portion1, 0, 0, this);
+//            g.drawImage(model.portion2, model.w1, 0, this);
+            g.drawImage(model.portion3, model.w1+model.x, 0, this);
         } else {
             // Background
             Graphics2D g2 = (Graphics2D) g;
@@ -246,36 +248,40 @@ public class Canvas extends JComponent implements MouseMotionListener, MouseList
         //if right click and past midway point, finish animation.
     }
 
-    public boolean turnPageAnimation() {
-        //timer
-        //action performed
-        //action event listener
-//            calculate values for portions
-            // make portions using subimage
-            // incremet timer ticks
-            // check how many there have been
-        //start timer.
+    public boolean turnPageAnimation(boolean fwd) {
+        model.fwd = fwd;
         model.curr = makeOffscreenImage(model.getCurrCanvas());
-        model.next = makeOffscreenImage(model.getNextCanvas());
+        if (model.fwd) {
+            model.next = makeOffscreenImage(model.getNextCanvas());
+        } else {
+            model.next = makeOffscreenImage(model.getPrevCanvas());
+        }
         model.setPageTurning(true);
-        timer = new Timer(100, new ActionListener() {
+        timer = new Timer(25, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (model.i < 4) {
-                    // make portions
-//                    System.out.print("image is null: ");
-//                    System.out.println(model.curr == null);
-//                    System.out.print("Canvas is null: ");
-//                    System.out.println(model.getCurrCanvas() == null);
-                    model.portion1 = model.curr.getSubimage(0, 0, model.getCurrCanvas().getWidth()/2 - 10, model.getCurrCanvas().getHeight());
-//                    model.portion2 = offscreenImage.getSubimage(x, y, width, height);
-                    model.portion3 = model.next.getSubimage(model.getCurrCanvas().getWidth()/2, 0, model.getCurrCanvas().getWidth()/2, model.getCurrCanvas().getHeight());
+                if (model.i <= model.ITERATIONS/2) {
+                    System.out.println(model.i);
+                    int h = model.getCurrCanvas().getHeight();
+                    model.x = model.i * model.getCurrCanvas().getWidth() / model.ITERATIONS;
+                    System.out.println(model.x);
+                    model.w1 = Math.max(0, model.getCurrCanvas().getWidth() - 2 * model.x);
+                    System.out.println(model.w1);
+                    model.portion1 = model.curr.getSubimage(0, 0, model.w1, h);
+                    model.portion3 = model.next.getSubimage(model.w1 + model.x, 0, model.x, h);
                     // set portions
-                    model.i++;
                     model.getCurrCanvas().repaint();
+                    model.i++;
+                } else if (model.i == model.ITERATIONS/2 +1) {
+                    model.x = 0;
+                    model.w1 = 0;
+                    model.portion1 = null;
+                    model.portion3 = model.next;
+                    model.getCurrCanvas().repaint();
+                    model.i++;
                 } else {
                     model.setPageTurning(false);
-                    model.i = 0;
+                    model.i = 1;
                     view.RHSide.revalidate();
                     view.RHSide.repaint();
                     timer.stop();

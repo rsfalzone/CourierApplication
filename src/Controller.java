@@ -11,7 +11,6 @@ public class Controller {
     public Controller(Model model, View view) {
         this.model = model;
         this.view = view;
-
         view.addNewPageListener(new AddRemListener(NavAction.ADD));
         view.addDelPageListener(new AddRemListener(NavAction.DEL));
         view.addPageFwdListener(new NavigationListener(NavAction.FWD));
@@ -118,13 +117,14 @@ public class Controller {
             // Update Model
             switch (action) {
                 case FWD:
-                    model.getCurrCanvas().turnPageAnimation();
+                    model.getCurrCanvas().turnPageAnimation(true);
                     model.NextCanvas();
                     model.setStatusText(
                             String.format("Page forward in Canvas. Current Page: (%d/%d)",
                                     model.getCurrIndex() + 1, model.getCanvasListSize()));
                     break;
                 case BCK:
+//                    model.getCurrCanvas().turnPageAnimation(false);
                     model.PrevCanvas();
                     model.setStatusText(
                             String.format("Page backward in Canvas. Current Page: (%d/%d)",

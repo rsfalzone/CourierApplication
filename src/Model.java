@@ -9,12 +9,16 @@ public class Model {
     private int currIndex;
     private String statusText;
     private Boolean pageTurning = false;
-    int i;
+    boolean fwd;
+    int i = 1;
+    static int ITERATIONS = 24;
+    int w1;
+    int x;
     BufferedImage curr;
     BufferedImage next;
     BufferedImage portion1;
-    BufferedImage portion2;
     BufferedImage portion3;
+
 
     // TODO: Canvas must access inkMode in model
     //          Current structure requires:
