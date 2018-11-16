@@ -1,3 +1,5 @@
+import java.awt.image.BufferedImage;
+import java.sql.BatchUpdateException;
 import java.util.LinkedList;
 
 public class Model {
@@ -6,6 +8,10 @@ public class Model {
     private int currIndex;
     private String statusText;
     private Boolean pageTurning = false;
+    int i;
+    BufferedImage curr;
+    BufferedImage next;
+
 
     // TODO: Canvas must access inkMode in model
     //          Current structure requires:

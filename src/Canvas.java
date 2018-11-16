@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import javax.swing.SwingUtilities;
 
@@ -9,6 +10,7 @@ public class Canvas extends JComponent implements MouseMotionListener, MouseList
     private Model model;
     private View view;
     private ArrayList<Drawn> displayList;
+    Timer timer;
 
     public Canvas(Model model, View view){
         this.model = model;
@@ -239,4 +241,39 @@ public class Canvas extends JComponent implements MouseMotionListener, MouseList
 //        System.out.println("Here2");
         //if right click and past midway point, finish animation.
     }
+
+    public boolean turnPageAnimation() {
+
+        model.setPageTurning(true);
+        timer = new Timer(100, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                BufferedImage curr = makeOffscreenImage(model.getCurrCanvas());
+                BufferedImage next = makeOffscreenImage(model.getNextCanvas());
+                if (model.i < 4) {
+                    model.i++;
+                } else {
+                    model.i = 0;
+                    timer.stop();
+                }
+                System.out.println(model.i);
+            }
+        });
+        timer.start();
+        model.setPageTurning(false);
+        return true;
+    }
+    public BufferedImage makeOffscreenImage (JComponent source) {
+        // Create our BufferedImage and get a Graphics object for it
+        GraphicsConfiguration gfxConfig = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
+        BufferedImage offscreenImage = gfxConfig.createCompatibleImage(source.getWidth(), source.getHeight());
+        Graphics2D offscreenGraphics = (Graphics2D) offscreenImage.getGraphics();
+
+        // Tell the component to paint itself onto the image
+        source.paint(offscreenGraphics);
+
+        // return the image
+        return offscreenImage;
+    }
+
 }
