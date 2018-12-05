@@ -71,7 +71,8 @@ public class Controller {
             }
 
             // Update View (pt. 2)
-            view.canvasScroll = new JScrollPane(model.getCurrCanvas());
+            view.canvasScroll = new JPanel(new GridLayout());
+            view.canvasScroll.add(model.getCurrCanvas());
             view.statusBar.setText(model.getStatusText());
             view.RHSide.add(view.canvasScroll, BorderLayout.CENTER);
             view.RHSide.revalidate();
@@ -135,7 +136,8 @@ public class Controller {
             // Update View (pt. 2)
             System.out.print("page turning:");
             System.out.println(model.getPageTurning());
-            view.canvasScroll = new JScrollPane(model.getCurrCanvas());
+            view.canvasScroll = new JPanel(new GridLayout());
+            view.canvasScroll.add(model.getCurrCanvas());
             view.statusBar.setText(model.getStatusText());
             view.RHSide.add(view.canvasScroll, BorderLayout.CENTER);
             view.RHSide.revalidate();

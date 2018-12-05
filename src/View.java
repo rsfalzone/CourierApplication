@@ -9,7 +9,7 @@ public class View {
     JTabbedPane LHSide;
     JPanel RHSide;
 
-    JScrollPane canvasScroll;
+    JPanel canvasScroll;
     JLabel statusBar;
 
     JButton btnNewPage;
@@ -36,7 +36,7 @@ public class View {
 
     //RH Side
         // Canvas
-        canvasScroll = new JScrollPane();
+        canvasScroll = new JPanel(new GridLayout());
         // TODO: Scroll bar configuration
 
         // Canvas Page Navigation buttons
