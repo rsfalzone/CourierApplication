@@ -9,7 +9,6 @@ public class View {
     JTabbedPane LHSide;
     JPanel RHSide;
 
-    JPanel canvasScroll;
     JLabel statusBar;
 
     JButton btnNewPage;
@@ -36,7 +35,8 @@ public class View {
 
     //RH Side
         // Canvas
-        canvasScroll = new JPanel(new GridLayout());
+        model.cardView = new CardView();
+        model.cardView.setLayout(new GridLayout());
         // TODO: Scroll bar configuration
 
         // Canvas Page Navigation buttons
@@ -73,7 +73,7 @@ public class View {
         buttonPanel.add(btnText);
 
         RHSide = new JPanel(new BorderLayout());
-        RHSide.add(canvasScroll, BorderLayout.CENTER);
+        RHSide.add(model.cardView, BorderLayout.CENTER);
         RHSide.add(buttonPanel, BorderLayout.SOUTH);
 
         // Main Frame

@@ -5,6 +5,8 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import javax.swing.SwingUtilities;
 
+import static java.lang.Math.max;
+
 
 public class Canvas extends JComponent implements MouseMotionListener, MouseListener, KeyListener {
     private Model model;
@@ -261,13 +263,14 @@ public class Canvas extends JComponent implements MouseMotionListener, MouseList
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (model.i <= model.ITERATIONS/2) {
+
                     System.out.println(model.i);
                     int h = model.getCurrCanvas().getHeight();
                     model.x = model.i * model.getCurrCanvas().getWidth() / model.ITERATIONS;
                     System.out.println(model.x);
-                    model.w1 = Math.max(0, model.getCurrCanvas().getWidth() - 2 * model.x);
+                    model.w1 = max(0, model.getCurrCanvas().getWidth() - 2 * model.x);
                     System.out.println(model.w1);
-                    model.portion1 = model.curr.getSubimage(0, 0, model.w1, h);
+                    model.portion1 = model.curr.getSubimage(0, 0, max(model.w1, 1), h);
                     model.portion3 = model.next.getSubimage(model.w1 + model.x, 0, model.x, h);
                     // set portions
                     model.getCurrCanvas().repaint();

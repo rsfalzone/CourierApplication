@@ -51,7 +51,7 @@ public class Controller {
 
         public void actionPerformed(ActionEvent e) {
             // Update View (pt. 1)
-            view.RHSide.remove(view.canvasScroll);
+            model.cardView.removeAll();
 
             // Update Model
             switch (action) {
@@ -71,10 +71,8 @@ public class Controller {
             }
 
             // Update View (pt. 2)
-            view.canvasScroll = new JPanel(new GridLayout());
-            view.canvasScroll.add(model.getCurrCanvas());
+            model.cardView.add(model.getCurrCanvas());
             view.statusBar.setText(model.getStatusText());
-            view.RHSide.add(view.canvasScroll, BorderLayout.CENTER);
             view.RHSide.revalidate();
             view.RHSide.repaint();
 
@@ -113,7 +111,7 @@ public class Controller {
 
         public void actionPerformed(ActionEvent e) {
             // Update View (pt. 1)
-            view.RHSide.remove(view.canvasScroll);
+            model.cardView.removeAll();
 
             // Update Model
             switch (action) {
@@ -136,10 +134,8 @@ public class Controller {
             // Update View (pt. 2)
             System.out.print("page turning:");
             System.out.println(model.getPageTurning());
-            view.canvasScroll = new JPanel(new GridLayout());
-            view.canvasScroll.add(model.getCurrCanvas());
+            model.cardView.add(model.getCurrCanvas());
             view.statusBar.setText(model.getStatusText());
-            view.RHSide.add(view.canvasScroll, BorderLayout.CENTER);
             view.RHSide.revalidate();
             view.RHSide.repaint();
             view.RHSide.repaint();

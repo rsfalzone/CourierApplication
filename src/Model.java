@@ -14,6 +14,7 @@ public class Model {
     static int ITERATIONS = 24;
     int w1;
     int x;
+    CardView cardView;
     BufferedImage curr;
     BufferedImage next;
     BufferedImage portion1;
