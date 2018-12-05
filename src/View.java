@@ -11,6 +11,7 @@ public class View {
 
     JLabel statusBar;
 
+    JButton btnCardView;
     JButton btnNewPage;
     JButton btnDelPage;
     JButton btnPageFwd;
@@ -40,6 +41,7 @@ public class View {
         // TODO: Scroll bar configuration
 
         // Canvas Page Navigation buttons
+        btnCardView = new JButton("Card View");
         btnNewPage = new JButton("New Page");
         btnDelPage = new JButton("Delete Page");
         btnPageFwd = new JButton("Page Forward");
@@ -63,6 +65,7 @@ public class View {
 
         // Button Panel
         JPanel buttonPanel = new JPanel();
+        buttonPanel.add(btnCardView);
         buttonPanel.add(btnNewPage);
         buttonPanel.add(btnDelPage);
         buttonPanel.add(btnPageFwd);
