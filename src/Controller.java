@@ -51,6 +51,7 @@ public class Controller {
 
         public void actionPerformed(ActionEvent e) {
             // Update View (pt. 1)
+            model.cardView.cardmode = false;
             model.cardView.removeAll();
 
             // Update Model
@@ -81,6 +82,7 @@ public class Controller {
         }
     }
     public void buttonControl(){
+//        view.btnCardView.setEnabled(true);
         if (model.getCanvasListSize() == 1) {
             // Only one Canvas
             view.btnDelPage.setEnabled(false);
@@ -111,6 +113,7 @@ public class Controller {
 
         public void actionPerformed(ActionEvent e) {
             // Update View (pt. 1)
+            model.cardView.cardmode = false;
             model.cardView.removeAll();
 
             // Update Model

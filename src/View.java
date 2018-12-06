@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.nio.Buffer;
+import java.util.ArrayList;
 
 public class View {
     Model model;
@@ -42,6 +44,36 @@ public class View {
 
         // Canvas Page Navigation buttons
         btnCardView = new JButton("Card View");
+        btnCardView.addActionListener(l -> {
+            System.out.println("Clicked");
+            model.cardView.removeAll();
+            model.cardView.setLayout(new GridLayout());
+            ArrayList<Canvas> cards = new ArrayList<>();
+            for (Canvas c : model.getCanvasList()) {
+                model.cardView.add(c);
+                cards.add(c);
+            }
+            model.cardView.cardmode = true;
+            this.RHSide.revalidate();
+            this.RHSide.repaint();
+
+
+
+            this.btnCardView.setEnabled(false);
+            this.btnDelPage.setEnabled(false);
+            this.btnPageFwd.setEnabled(false);
+            this.btnPageBack.setEnabled(false);
+        });
+
+
+
+
+
+
+
+
+
+
         btnNewPage = new JButton("New Page");
         btnDelPage = new JButton("Delete Page");
         btnPageFwd = new JButton("Page Forward");
